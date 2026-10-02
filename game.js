@@ -487,7 +487,8 @@
   function renderClock() {
     const isDay = state.phase === 'day';
     dom.phaseLabel.textContent = `DAY ${state.day} • ${isDay ? 'DAYLIGHT' : 'NIGHT'}`;
-    dom.gameClock.textContent = `${formatGameTime()}${state.paused ? ' • FROZEN' : ''}`;
+    const remaining = Math.max(0, PHASE_SECONDS - state.phaseElapsed);
+    dom.gameClock.textContent = `${formatCountdown(remaining)}${state.paused ? ' • FROZEN' : ''}`;
   }
 
   function renderStats() {
@@ -609,7 +610,7 @@
       row.className = 'log-entry';
       const t = document.createElement('div');
       t.className = 'log-time';
-      t.textContent = `DAY ${entry.day} • ${entry.phase.toUpperCase()} • ${formatStoredMinute(entry.phase, entry.minute)}`;
+      t.textContent = `DAY ${entry.day} • ${entry.phase.toUpperCase()}`;
       const body = document.createElement('div');
       body.className = 'log-text';
       body.textContent = entry.text;
@@ -618,35 +619,8 @@
     });
   }
 
-  function formatGameTime() {
-    // One real hour represents twelve in-game hours.
-    // Showing seconds makes the accelerated clock visibly continuous:
-    // 1 real second = 12 in-game seconds.
-    const phaseGameSeconds = Math.floor((state.phaseElapsed / PHASE_SECONDS) * 12 * 60 * 60);
-    let total = (state.phase === 'day' ? 6 * 60 * 60 : 18 * 60 * 60) + phaseGameSeconds;
-    total %= 24 * 60 * 60;
-
-    const h24 = Math.floor(total / 3600);
-    const min = Math.floor((total % 3600) / 60);
-    const sec = total % 60;
-    const suffix = h24 >= 12 ? 'PM' : 'AM';
-    const h12 = h24 % 12 || 12;
-
-    return `${h12}:${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')} ${suffix}`;
-  }
-
   function inGameMinuteOfPhase() {
     return Math.floor(((state.phaseElapsed / PHASE_SECONDS) * 12 * 60 * 60) / 60);
-  }
-
-  function formatStoredMinute(phase, minute) {
-    let total = phase === 'day' ? 6 * 60 + minute : 18 * 60 + minute;
-    total %= 24 * 60;
-    const h24 = Math.floor(total / 60);
-    const min = total % 60;
-    const suffix = h24 >= 12 ? 'PM' : 'AM';
-    const h12 = h24 % 12 || 12;
-    return `${h12}:${String(min).padStart(2,'0')} ${suffix}`;
   }
 
   function formatCountdown(seconds) {
