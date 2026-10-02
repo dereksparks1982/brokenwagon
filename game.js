@@ -79,7 +79,7 @@
 
   function cacheDom() {
     [
-      'phaseLabel','gameClock','phaseClock','pauseBtn','asciiMap','distanceText','partyStat','foodStat','ammoStat','cashStat',
+      'phaseLabel','gameClock','pauseBtn','asciiMap','distanceText','partyStat','foodStat','ammoStat','cashStat',
       'wagonStat','oxenStat','supplyStat','medicineStat','traceStat','milesStat','activityName','activityDetail','activityProgress',
       'activityTimer','actionsTitle','actions','goodwillStat','banditStat','disciplineStat','journal','newGameBtn','eventModal',
       'eventTitle','eventText','eventChoices','devNotice'
@@ -487,9 +487,7 @@
   function renderClock() {
     const isDay = state.phase === 'day';
     dom.phaseLabel.textContent = `DAY ${state.day} • ${isDay ? 'DAYLIGHT' : 'NIGHT'}`;
-    dom.gameClock.textContent = formatGameTime();
-    const remaining = Math.max(0, PHASE_SECONDS - state.phaseElapsed);
-    dom.phaseClock.textContent = `${formatCountdown(remaining)} remaining${state.paused ? ' • FROZEN' : ''}`;
+    dom.gameClock.textContent = `${formatGameTime()}${state.paused ? ' • FROZEN' : ''}`;
   }
 
   function renderStats() {
@@ -621,12 +619,24 @@
   }
 
   function formatGameTime() {
-    const gameMinutes = inGameMinuteOfPhase();
-    return formatStoredMinute(state.phase, gameMinutes);
+    // One real hour represents twelve in-game hours.
+    // Showing seconds makes the accelerated clock visibly continuous:
+    // 1 real second = 12 in-game seconds.
+    const phaseGameSeconds = Math.floor((state.phaseElapsed / PHASE_SECONDS) * 12 * 60 * 60);
+    let total = (state.phase === 'day' ? 6 * 60 * 60 : 18 * 60 * 60) + phaseGameSeconds;
+    total %= 24 * 60 * 60;
+
+    const h24 = Math.floor(total / 3600);
+    const min = Math.floor((total % 3600) / 60);
+    const sec = total % 60;
+    const suffix = h24 >= 12 ? 'PM' : 'AM';
+    const h12 = h24 % 12 || 12;
+
+    return `${h12}:${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')} ${suffix}`;
   }
 
   function inGameMinuteOfPhase() {
-    return Math.floor((state.phaseElapsed / PHASE_SECONDS) * 720);
+    return Math.floor(((state.phaseElapsed / PHASE_SECONDS) * 12 * 60 * 60) / 60);
   }
 
   function formatStoredMinute(phase, minute) {
