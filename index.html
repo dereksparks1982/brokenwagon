@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#201912" />
+  <title>Broken Wagon - Prototype</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead">
+      <div>
+        <p class="kicker">ELDERRED SOFTWORKS • TRAIL SIMULATION PROTOTYPE</p>
+        <h1>BROKEN WAGON</h1>
+        <p class="subtitle">California, or the grave. 1849.</p>
+      </div>
+      <div class="clockbox" aria-live="polite">
+        <div id="phaseLabel" class="phase">DAY 1 • DAYLIGHT</div>
+        <div id="gameClock" class="bigclock">6:00 AM</div>
+        <div id="phaseClock" class="phaseclock">60:00 remaining</div>
+        <button id="pauseBtn" class="small-btn">PAUSE</button>
+      </div>
+    </header>
+
+    <section class="map-panel panel">
+      <div class="panel-title-row">
+        <h2>Trail Map</h2>
+        <div id="distanceText" class="muted">Boston, Massachusetts → Sacramento, California</div>
+      </div>
+      <pre id="asciiMap" class="ascii-map" aria-label="ASCII route map"></pre>
+      <div class="legend">@ party position • □ waypoint • route is provisional for the prototype</div>
+    </section>
+
+    <section class="dashboard-grid">
+      <section class="panel stats-panel">
+        <h2>Wagon Ledger</h2>
+        <div class="stat-grid">
+          <div><span>Party</span><strong id="partyStat">5</strong></div>
+          <div><span>Food</span><strong id="foodStat">300 lb</strong></div>
+          <div><span>Ammunition</span><strong id="ammoStat">120</strong></div>
+          <div><span>Cash</span><strong id="cashStat">$700</strong></div>
+          <div><span>Wagon</span><strong id="wagonStat">100%</strong></div>
+          <div><span>Oxen</span><strong id="oxenStat">100%</strong></div>
+          <div><span>Supplies</span><strong id="supplyStat">18</strong></div>
+          <div><span>Medicine</span><strong id="medicineStat">8</strong></div>
+          <div><span>Trail Trace</span><strong id="traceStat">0%</strong></div>
+          <div><span>Miles</span><strong id="milesStat">0 / 3400</strong></div>
+        </div>
+      </section>
+
+      <section class="panel activity-panel">
+        <h2>Current Work</h2>
+        <div id="activityName" class="activity-name">TRAVELING WEST</div>
+        <div id="activityDetail" class="activity-detail">The wagon rolls while daylight lasts.</div>
+        <div class="progress-track"><div id="activityProgress" class="progress-bar"></div></div>
+        <div id="activityTimer" class="muted">Continuous</div>
+      </section>
+
+      <section class="panel actions-panel">
+        <h2 id="actionsTitle">Daylight Orders</h2>
+        <div id="actions" class="actions"></div>
+        <p class="fineprint">There are no action points. Every choice costs actual trail time. Closing the page freezes the simulation exactly where it is.</p>
+      </section>
+
+      <section class="panel relations-panel">
+        <h2>Trail Relations</h2>
+        <div class="relation-row"><span>Regional goodwill</span><strong id="goodwillStat">Neutral</strong></div>
+        <div class="relation-row"><span>Bandit attention</span><strong id="banditStat">Low</strong></div>
+        <div class="relation-row"><span>Camp discipline</span><strong id="disciplineStat">Clean</strong></div>
+        <p class="fineprint">Good or bad dealings can echo forward. Trust can be damaged, repaired, and carried by word of mouth.</p>
+      </section>
+    </section>
+
+    <section class="panel journal-panel">
+      <div class="panel-title-row">
+        <h2>Trail Journal</h2>
+        <button id="newGameBtn" class="small-btn danger">NEW JOURNEY</button>
+      </div>
+      <div id="journal" class="journal"></div>
+    </section>
+
+    <footer>
+      <span>Broken Wagon prototype • one real hour of day + one real hour of night</span>
+      <span id="devNotice"></span>
+    </footer>
+  </main>
+
+  <div id="eventModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="eventTitle">
+    <div class="modal-card">
+      <div class="event-stamp">TRAIL EVENT</div>
+      <h2 id="eventTitle">Event</h2>
+      <p id="eventText"></p>
+      <div id="eventChoices" class="event-choices"></div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
