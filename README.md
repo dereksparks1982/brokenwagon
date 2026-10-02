@@ -13,7 +13,7 @@ There are no energy points or artificial action limits. The shared clock keeps m
 This first playable slice includes:
 
 - provisional Boston-to-Sacramento route
-- ASCII route map with live party position
+- east-to-west ASCII route map with California/Pacific on the left, New England/Atlantic on the right, and the live party marker traveling west
 - continuous daylight travel
 - one-hour daylight / one-hour night cycle
 - pause/play hard freeze
@@ -31,11 +31,13 @@ This first playable slice includes:
 
 The route and historical event set are deliberately provisional. The prototype is for proving the simulation loop before locking the final starting point, route, nations encountered, settlements, prices, dates, and historical encounter tables.
 
-## Running
+## Play
 
-Open `index.html` in a browser, or serve the folder with any basic static web server.
+Broken Wagon is a GitHub Pages web app:
 
-For rapid testing, add `?dev=1` to the URL. Dev mode runs the authoritative trail clock at 60x speed. Normal play always uses the intended real-time clock.
+**https://dereksparks1982.github.io/brokenwagon/**
+
+For rapid testing, add `?dev=1` to the web-app URL. Dev mode runs the authoritative trail clock at 60x speed. Normal play always uses the intended real-time clock.
 
 ## Reference study
 
