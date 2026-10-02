@@ -510,13 +510,15 @@
     const line = Array(width).fill('-');
     const labels = [];
 
+    // Geographic orientation: west is left, east is right.
+    // The party begins in New England on the right and travels left toward California.
     route.forEach((r, i) => {
-      const x = Math.round((r.mile / TOTAL_MILES) * (width - 1));
+      const x = (width - 1) - Math.round((r.mile / TOTAL_MILES) * (width - 1));
       line[x] = '□';
       if (i % 2 === 0 || i === route.length - 1) labels.push({ x, text: r.short });
     });
 
-    const px = Math.round((state.miles / TOTAL_MILES) * (width - 1));
+    const px = (width - 1) - Math.round((state.miles / TOTAL_MILES) * (width - 1));
     line[px] = '@';
 
     const labelLine = Array(width).fill(' ');
@@ -528,13 +530,14 @@
     const next = route.find(r => r.mile > state.miles) || route[route.length - 1];
     const prev = [...route].reverse().find(r => r.mile <= state.miles) || route[0];
     dom.asciiMap.textContent = [
-      'ATLANTIC' + ' '.repeat(width - 15) + 'PACIFIC',
+      'PACIFIC' + ' '.repeat(width - 14) + 'ATLANTIC',
       line.join(''),
       labelLine.join(''),
       '',
+      `WEST ← California                                      New England → EAST`,
       `You are between ${prev.name} and ${next.name}. Next waypoint: ${next.name} (${Math.max(0, Math.ceil(next.mile - state.miles))} mi).`
     ].join('\n');
-    dom.distanceText.textContent = `Boston, Massachusetts → Sacramento, California • ${Math.floor(state.miles)} miles traveled`;
+    dom.distanceText.textContent = `Boston, Massachusetts → Sacramento, California • ${Math.floor(state.miles)} miles traveled west`;
   }
 
   function renderActivity() {
